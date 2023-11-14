@@ -2032,6 +2032,41 @@
 					"packageName": "elevate-mentoring"
 				}
 			]
+		},{
+			"sourceRoute": "/interface/v1/account/deactivate",
+			"type": "POST",
+			"priority": "MUST_HAVE",
+			"inSequence": true,
+			"orchestrated": true,
+			"responseMessage": "Account deactivated Successfully",
+			"targetPackages": [
+				{
+					"basePackageName": "user",
+					"packageName": "elevate-user",
+					"targetBody": [],
+					"responseBody": []
+				},
+				{
+					"basePackageName": "mentoring",
+					"packageName": "elevate-mentoring",
+					"targetBody": [],
+					"responseBody": [
+					]
+				}
+			]
+		},{
+			"sourceRoute": "/user/v1/account/generateDisableOtp",
+			"type": "POST",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"responseMessage": "Account deactivation OTP sent Successfully",
+			"targetPackages": [
+				{
+					"basePackageName": "user",
+					"packageName": "elevate-user"
+				}
+			]
 		}
 	],
 	"requiredEnvs": {
