@@ -1419,7 +1419,7 @@
 			"sourceRoute": "/mentoring/v1/mentors/share",
 			"type": "GET",
 			"priority": "MUST_HAVE",
-			"inSequence": false,
+			"inSequence": true,
 			"orchestrated": false,
 			"targetPackages": [
 				{
@@ -1432,7 +1432,7 @@
 			"sourceRoute": "/mentoring/v1/mentors/share/:id",
 			"type": "GET",
 			"priority": "MUST_HAVE",
-			"inSequence": true,
+			"inSequence": false,
 			"orchestrated": false,
 			"targetPackages": [
 				{
