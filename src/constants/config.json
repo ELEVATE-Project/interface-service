@@ -1432,7 +1432,7 @@
 			"sourceRoute": "/mentoring/v1/mentors/share/:id",
 			"type": "GET",
 			"priority": "MUST_HAVE",
-			"inSequence": false,
+			"inSequence": true,
 			"orchestrated": false,
 			"targetPackages": [
 				{
