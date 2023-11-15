@@ -88,8 +88,8 @@
 			"sourceRoute": "/interface/v1/account/delete",
 			"type": "POST",
 			"priority": "MUST_HAVE",
-			"inSequence": false,
-			"orchestrated": false,
+			"inSequence": true,
+			"orchestrated": true,
 			"responseMessage": "delete user Successfully",
 			"targetPackages": [
 				{
