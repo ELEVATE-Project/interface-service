@@ -83,6 +83,27 @@
 			]
 		},
 		{
+			"sourceRoute": "/interface/v1/account/reActivate",
+				"type": "POST",
+				"priority": "MUST_HAVE",
+				"inSequence": true,
+				"orchestrated": true,
+				"targetPackages": [
+				  {
+					"basePackageName": "user",
+					"packageName": "elevate-user",
+					"targetBody": [],
+					"responseBody": []
+				  },
+				  {
+					"basePackageName": "mentoring",
+					"packageName": "elevate-mentoring",
+					"targetBody": [],
+					"responseBody": []
+					}
+				]
+			  },
+		{
 			"sourceRoute": "/user/v1/account/login",
 			"type": "POST",
 			"priority": "MUST_HAVE",
@@ -175,6 +196,19 @@
 		},
 		{
 			"sourceRoute": "/user/v1/account/registrationOtp",
+			"type": "POST",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "user",
+					"packageName": "elevate-user"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/user/v1/account/reActivateOtp",
 			"type": "POST",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
