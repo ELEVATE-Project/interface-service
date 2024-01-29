@@ -61,7 +61,7 @@ public/assessment/web2
 public/tmp
 
 .env
-
+src/.env
 gcp.json
 
 gcp1.json
@@ -76,3 +76,5 @@ gcp1.json
 src/globalConfig.json
 
 dev-ops/report
+
+src/package-lock.json
