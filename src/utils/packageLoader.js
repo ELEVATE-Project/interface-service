@@ -6,7 +6,6 @@ const packageLoader = () => {
 		const [packageName, version] = servicePackage.split('@')
 		packages.push(require(packageName))
 	}
-	//console.log(packages)
 	return packages
 }
 

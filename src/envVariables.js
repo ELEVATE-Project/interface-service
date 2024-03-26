@@ -28,6 +28,40 @@ let environmentVariables = {
 		message: 'Required notification service base URL',
 		optional: false,
 	},
+	RATE_LIMITER_PUBLIC_LOW_WINDOW: {
+		message: 'Required window duration for public-low type',
+		optional: true,
+		default: 2 * 60 * 1000,
+	},
+	RATE_LIMITER_PUBLIC_LOW_LIMIT: {
+		message: 'Required limit for public-low type',
+		optional: true,
+		default: 5,
+	},
+	RATE_LIMITER_GENERAL_WINDOW: {
+		message: 'Required window duration for general type',
+		optional: true,
+		default: 1 * 60 * 1000,
+	},
+	RATE_LIMITER_GENERAL_LIMIT: {
+		message: 'Required limit for general type',
+		optional: true,
+		default: 50,
+	},
+	RATE_LIMITER_INTERNAL_WINDOW: {
+		message: 'Required window duration for internal type',
+		optional: true,
+		default: 1 * 60 * 1000,
+	},
+	RATE_LIMITER_INTERNAL_LIMIT: {
+		message: 'Required limit for internal type',
+		optional: true,
+		default: 50,
+	},
+	RATE_LIMITER_NUMBER_OF_PROXIES: {
+		message: 'Required number of proxies',
+		optional: false,
+	},
 	...config.requiredEnvs,
 }
 

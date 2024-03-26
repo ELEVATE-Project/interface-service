@@ -14,11 +14,6 @@ exports.routeConfigInjector = (req, res, next) => {
 	req['inSequence'] = routeConfig.inSequence
 	req['orchestrated'] = routeConfig.orchestrated
 	req['sourceRoute'] = routeConfig.sourceRoute
-	console.log({
-		baseURL,
-		parsedUrl,
-		urlWithoutQuery,
-		routeConfig,
-	})
+	req['rateLimit'] = routeConfig.rateLimit
 	next()
 }

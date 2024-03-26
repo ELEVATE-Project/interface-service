@@ -9,12 +9,9 @@ async function installPackages(packageString) {
 			console.error(`Invalid package format: ${userPackage}`)
 			continue
 		}
-
 		const installCommand = version ? `${packageName}@${version}` : packageName
-
 		try {
-			const { stdout, stderr } = child_process.execSync(`npm install ${installCommand}`)
-			//console.log(`${installCommand} installed successfully`)
+			child_process.execSync(`npm install ${installCommand}`)
 		} catch (error) {
 			console.error(`Error installing ${installCommand}: ${error}`)
 			throw new Error(`Error installing ${installCommand}: ${error}`)
