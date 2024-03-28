@@ -24,7 +24,7 @@
 		"elevate-mentoring": "^1.1.46",
 		"elevate-package-validator": "^1.0.0",
 		"elevate-scheduler": "^1.0.4",
-		"elevate-user": "^1.1.37",
+		"elevate-user": "^1.1.43",
 		"express": "^4.18.2",
 		"express-rate-limit": "^7.2.0",
 		"module-alias": "^2.2.3"
