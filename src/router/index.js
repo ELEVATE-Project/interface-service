@@ -14,6 +14,7 @@ exports.initializeRouter = (packages) => {
 		const router = express.Router()
 		const routes = routesConfigs.routes
 		routes.map((route) => {
+
 			const method = httpMethods[route.type]
 			if (!route.orchestrated) {
 				const basePackageName = route.targetPackages[0].basePackageName
