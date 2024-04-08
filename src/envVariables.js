@@ -28,6 +28,10 @@ let environmentVariables = {
 		message: 'Required notification service base URL',
 		optional: false,
 	},
+	UNNATI_SERVICE_BASE_URL: {
+		message: 'Required project service base URL',
+		optional: false,
+	},
 	RATE_LIMITER_PUBLIC_LOW_WINDOW: {
 		message: 'Required window duration for public-low type',
 		optional: true,
