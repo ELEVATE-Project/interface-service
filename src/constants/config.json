@@ -2860,67 +2860,132 @@
 			]
 		},
 		{
-			"sourceRoute": "/mentoring/v1/sessions/addMentees",
+			"sourceRoute": "/user/v1/permissions/create",
 			"type": "POST",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "mentoring",
-					"packageName": "elevate-mentoring"
+					"basePackageName": "user",
+					"packageName": "elevate-user"
 				}
 			]
 		},
 		{
-			"sourceRoute": "/mentoring/v1/sessions/addMentees/:id",
-			"type": "POST",
+			"sourceRoute": "/user/v1/permissions/list",
+			"type": "GET",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "mentoring",
-					"packageName": "elevate-mentoring"
+					"basePackageName": "user",
+					"packageName": "elevate-user"
 				}
 			]
 		},
 		{
-			"sourceRoute": "/mentoring/v1/sessions/removeMentees",
+			"sourceRoute": "/user/v1/permissions/update/:id",
 			"type": "POST",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "mentoring",
-					"packageName": "elevate-mentoring"
+					"basePackageName": "user",
+					"packageName": "elevate-user"
 				}
 			]
 		},
 		{
-			"sourceRoute": "/mentoring/v1/sessions/removeMentees/:id",
-			"type": "POST",
+			"sourceRoute": "/user/v1/permissions/delete/:id",
+			"type": "DELETE",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "mentoring",
-					"packageName": "elevate-mentoring"
+					"basePackageName": "user",
+					"packageName": "elevate-user"
 				}
 			]
 		},
 		{
-			"sourceRoute": "/mentoring/v1/sessions/bulkUpdateMentorNames",
+			"sourceRoute": "/user/v1/modules/create",
 			"type": "POST",
 			"priority": "MUST_HAVE",
 			"inSequence": false,
 			"orchestrated": false,
 			"targetPackages": [
 				{
-					"basePackageName": "mentoring",
-					"packageName": "elevate-mentoring"
+					"basePackageName": "user",
+					"packageName": "elevate-user"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/user/v1/modules/update/:id",
+			"type": "POST",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "user",
+					"packageName": "elevate-user"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/user/v1/modules/list",
+			"type": "GET",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "user",
+					"packageName": "elevate-user"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/user/v1/modules/delete/:id",
+			"type": "DELETE",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "user",
+					"packageName": "elevate-user"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/user/v1/rolePermissionMapping/create/:role_id",
+			"type": "POST",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "user",
+					"packageName": "elevate-user"
+				}
+			]
+		},
+		{
+			"sourceRoute": "/user/v1/rolePermissionMapping/delete/:role_id",
+			"type": "POST",
+			"priority": "MUST_HAVE",
+			"inSequence": false,
+			"orchestrated": false,
+			"targetPackages": [
+				{
+					"basePackageName": "user",
+					"packageName": "elevate-user"
 				}
 			],
 			"rateLimit": {
