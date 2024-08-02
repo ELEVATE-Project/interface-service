@@ -1,5 +1,5 @@
 'use strict'
-const { routesConfigs } = require('@constants/routesConfigs')
+const { routesConfigs } = require('@root/configs/routesConfigs')
 
 exports.targetPackagesInjector = (req, res, next) => {
 	const routeConfig = routesConfigs.routes.find((route) => route.sourceRoute === req.originalUrl)
@@ -9,5 +9,6 @@ exports.targetPackagesInjector = (req, res, next) => {
 	req['orchestrated'] = routeConfig.orchestrated
 	req['responseMessage'] = routeConfig.responseMessage
 	req['rateLimit'] = routeConfig.rateLimit
+	req['requiresCustomHandling'] = routeConfig.requiresCustomHandling || false
 	next()
 }

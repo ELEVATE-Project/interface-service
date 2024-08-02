@@ -1,0 +1,162 @@
+{
+    "routes": [
+        {
+            "sourceRoute": "/interface/v1/account/create",
+            "type": "POST",
+            "priority": "MUST_HAVE",
+            "inSequence": true,
+            "orchestrated": true,
+            "responseMessage": "Account Created Successfully",
+            "targetPackages": [
+                {
+                    "basePackageName": "user",
+                    "packageName": "sunbird-user",
+                    "targetBody": [],
+                    "responseBody": [
+                        {
+                            "sourceField": "user.created_at",
+                            "targetField": "user.user_created_at"
+                        },
+                        {
+                            "sourceField": "user.updated_at",
+                            "targetField": "user.user_updated_at"
+                        }
+                    ]
+                },
+                {
+                    "basePackageName": "mentoring",
+                    "packageName": "sunbird-mentoring",
+                    "targetBody": [],
+                    "responseBody": [
+                        {
+                            "sourceField": "created_at",
+                            "targetField": "profile_created_at"
+                        },
+                        {
+                            "sourceField": "updated_at",
+                            "targetField": "profile_updated_at"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "sourceRoute": "/interface/v1/account/update",
+            "type": "PATCH",
+            "priority": "MUST_HAVE",
+            "inSequence": true,
+            "orchestrated": true,
+            "responseMessage": "Profile Updated Successfully",
+            "targetPackages": [
+                {
+                    "basePackageName": "user",
+                    "packageName": "sunbird-user",
+                    "targetBody": [],
+                    "responseBody": [
+                        {
+                            "sourceField": "created_at",
+                            "targetField": "user_created_at"
+                        },
+                        {
+                            "sourceField": "updated_at",
+                            "targetField": "user_updated_at"
+                        },
+                        {
+                            "sourceField": "meta",
+                            "targetField": "user_meta"
+                        },
+                        {
+                            "sourceField": "deleted_at",
+                            "targetField": "user_deleted_at"
+                        }
+                    ]
+                },
+                {
+                    "basePackageName": "mentoring",
+                    "packageName": "sunbird-mentoring",
+                    "targetBody": [],
+                    "responseBody": [
+                        {
+                            "sourceField": "created_at",
+                            "targetField": "profile_created_at"
+                        },
+                        {
+                            "sourceField": "updated_at",
+                            "targetField": "profile_updated_at"
+                        },
+                        {
+                            "sourceField": "meta",
+                            "targetField": "profile_meta"
+                        },
+                        {
+                            "sourceField": "deleted_at",
+                            "targetField": "profile_deleted_at"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "sourceRoute": "/interface/v1/entity-type/read",
+            "type": "POST",
+            "priority": "MUST_HAVE",
+            "inSequence": false,
+            "orchestrated": true,
+            "responseMessage": "Entity type fetched successfully",
+            "targetPackages": [
+                {
+                    "basePackageName": "user",
+                    "packageName": "sunbird-user",
+                    "targetBody": [],
+                    "responseBody": [
+                        {
+                            "sourceField": "entity_types",
+                            "targetField": "entity_types[]"
+                        }
+                    ]
+                },
+                {
+                    "basePackageName": "mentoring",
+                    "packageName": "sunbird-mentoring",
+                    "targetBody": [],
+                    "responseBody": [
+                        {
+                            "sourceField": "entity_types",
+                            "targetField": "entity_types[]"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "sourceRoute": "/interface/v1/account/login",
+            "type": "POST",
+            "priority": "MUST_HAVE",
+            "inSequence": true,
+            "orchestrated": true,
+            "responseMessage": "User logged in successfully.",
+            "targetPackages": [
+                {
+                    "basePackageName": "user",
+                    "packageName": "sunbird-user",
+                    "targetBody": [],
+                    "responseBody": []
+                },
+                {
+                    "basePackageName": "mentoring",
+                    "packageName": "sunbird-mentoring",
+                    "targetBody": [],
+                    "responseBody": [
+                        {
+                            "sourceField": "permissions",
+                            "targetField": "user.permissions[]"
+                        }
+                    ]
+                }
+            ],
+            "rateLimit": {
+                "type": "public-low"
+            }
+        }
+    ]
+}

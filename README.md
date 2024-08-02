@@ -123,7 +123,6 @@ interface-service/src$ sudo nano .env
 APPLICATION_PORT=3569
 API_DOC_URL= /interface/api-doc
 APPLICATION_ENV= development
-INSTALLED_PACKAGES= "elevate-user elevate-mentoring elevate-scheduler"
 MENTORING_SERVICE_BASE_URL= http://localhost:3000
 NOTIFICATION_SERVICE_BASE_URL= http://localhost:7201
 REQUIRED_PACKAGES= "elevate-user@1.1.38 elevate-mentoring@1.1.47 elevate-scheduler@1.0.4"

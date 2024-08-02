@@ -1,37 +1,54 @@
 'use strict'
-const { routesConfigs } = require('@constants/routesConfigs')
+
+const { routesConfigs } = require('@root/configs/routesConfigs')
 const { orchestrationController } = require('@controllers/orchestration')
 const { targetPackagesInjector } = require('@middlewares/targetPackagesInjector')
 const { routeConfigInjector } = require('@middlewares/routeConfigInjector')
 const { rateLimiter } = require('@middlewares/rateLimiter')
 const bodyParser = require('body-parser')
 const { httpMethods } = require('@constants/httpMethods')
-const {jsonBodyParserWithErrors} = require('@middlewares/jsonBodyParserWithErrors')
+const { jsonBodyParserWithErrors } = require('@middlewares/jsonBodyParserWithErrors')
+
+const urlencodedParser = bodyParser.urlencoded({ extended: true, limit: '50MB' })
 
 exports.initializeRouter = (packages) => {
 	try {
 		const express = require('express')
 		const router = express.Router()
 		const routes = routesConfigs.routes
-		routes.map((route) => {
+
+		routes.forEach((route) => {
 			const method = httpMethods[route.type]
-			if (!route.orchestrated) {
-				const basePackageName = route.targetPackages[0].basePackageName
-				const servicePackage = packages.find((obj) => obj.packageMeta.basePackageName === basePackageName)
-				router[method](route.sourceRoute, routeConfigInjector, rateLimiter, servicePackage.packageRouter)
-			} else {
+			const { sourceRoute, orchestrated, requiresCustomHandling, targetPackages } = route
+			const basePackageName = targetPackages[0].basePackageName
+			const servicePackage = packages.find((pkg) => pkg.packageMeta.basePackageName === basePackageName)
+
+			if (!servicePackage) throw new Error(`Package with basePackageName ${basePackageName} not found`)
+
+			if (orchestrated)
 				router[method](
-					route.sourceRoute,
+					sourceRoute,
 					targetPackagesInjector,
 					rateLimiter,
-					bodyParser.urlencoded({ extended: true, limit: '50MB' }),
+					urlencodedParser,
 					jsonBodyParserWithErrors,
 					orchestrationController.orchestrationHandler.bind(null, packages)
 				)
-			}
+			else if (requiresCustomHandling)
+				router[method](
+					sourceRoute,
+					routeConfigInjector,
+					rateLimiter,
+					urlencodedParser,
+					jsonBodyParserWithErrors,
+					servicePackage.packageRouter
+				)
+			else router[method](sourceRoute, routeConfigInjector, rateLimiter, servicePackage.packageRouter)
 		})
+
 		return router
 	} catch (err) {
-		console.log(err)
+		console.error('Error initializing router:', err)
+		throw err
 	}
 }

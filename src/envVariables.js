@@ -1,6 +1,6 @@
 'use strict'
 let table = require('cli-table')
-const config = require('@constants/config.json')
+const requiredEnvs = require('@configs/requiredEnvs.json')
 
 let tableData = new table()
 let environmentVariables = {
@@ -71,7 +71,7 @@ let environmentVariables = {
 		optional: true,
 		default: '*',
 	},
-	...config.requiredEnvs,
+	...requiredEnvs.requiredEnvs,
 }
 
 let success = true

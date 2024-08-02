@@ -1,6 +1,6 @@
 'use strict'
 const elevateValidator = require('elevate-package-validator')
-const { allExpectedRoutes } = require('@constants/routesConfigs')
+const { allExpectedRoutes } = require('@root/configs/routesConfigs')
 
 const packageValidator = (packages) => {
 	const meta = {
