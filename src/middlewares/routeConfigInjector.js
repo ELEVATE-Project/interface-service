@@ -1,5 +1,5 @@
 'use strict'
-const { routesConfigs } = require('@constants/routesConfigs')
+const { routesConfigs } = require('@root/configs/routesConfigs')
 const { matchPathsAndExtractParams } = require('@utils/patternMatcher')
 
 exports.routeConfigInjector = (req, res, next) => {
@@ -15,5 +15,6 @@ exports.routeConfigInjector = (req, res, next) => {
 	req['orchestrated'] = routeConfig.orchestrated
 	req['sourceRoute'] = routeConfig.sourceRoute
 	req['rateLimit'] = routeConfig.rateLimit
+	req['requiresCustomHandling'] = routeConfig.requiresCustomHandling || false
 	next()
 }

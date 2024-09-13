@@ -1,0 +1,12 @@
+{
+	"requiredEnvs": {
+		"USER_SERVICE_BASE_URL": {
+			"message": "Required user service base URL",
+			"optional": false
+		},
+		"MENTORING_SERVICE_BASE_URL": {
+			"message": "Required mentoring service base URL",
+			"optional": false
+		}
+	}
+}

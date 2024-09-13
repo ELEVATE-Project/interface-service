@@ -21,13 +21,14 @@
 		"cli-table": "^0.3.11",
 		"cors": "^2.8.5",
 		"dotenv": "^16.3.1",
-		"elevate-mentoring": "^1.1.50",
+		"elevate-kafka": "^1.0.7",
 		"elevate-package-validator": "^1.0.0",
 		"elevate-scheduler": "^1.0.4",
-		"elevate-user": "^1.1.49",
 		"express": "^4.18.2",
 		"express-rate-limit": "^7.2.0",
-		"module-alias": "^2.2.3"
+		"module-alias": "^2.2.3",
+		"sunbird-mentoring": "^1.1.52",
+		"sunbird-user": "^1.1.79"
 	},
 	"devDependencies": {
 		"eslint": "^8.16.0",
@@ -46,7 +47,7 @@
 		"@controllers": "controllers",
 		"@database": "database",
 		"@routes": "routes",
-		"@config": "config",
+		"@configs": "configs",
 		"@utils": "utils",
 		"@tests": "tests",
 		"@middlewares": "middlewares",
