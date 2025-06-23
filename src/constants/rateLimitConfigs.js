@@ -15,6 +15,13 @@ exports.rateLimitConfigs = {
 		legacyHeaders: false,
 		handler: standardHandler,
 	},
+	'public-minimum': {
+		windowMs: parseInt(process.env.RATE_LIMITER_PUBLIC_MINIMUM_WINDOW),
+		limit: parseInt(process.env.RATE_LIMITER_PUBLIC_MINIMUM_LIMIT),
+		standardHeaders: 'draft-7',
+		legacyHeaders: false,
+		handler: standardHandler,
+	},
 	general: {
 		windowMs: parseInt(process.env.RATE_LIMITER_GENERAL_WINDOW),
 		limit: parseInt(process.env.RATE_LIMITER_GENERAL_LIMIT),

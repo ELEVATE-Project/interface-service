@@ -45,6 +45,16 @@ let environmentVariables = {
 		optional: true,
 		default: 5,
 	},
+	RATE_LIMITER_PUBLIC_MINIMUM_WINDOW: {
+		message: 'Required window duration for public-minimum type',
+		optional: true,
+		default: 60 * 1000,
+	},
+	RATE_LIMITER_PUBLIC_MINIMUM_LIMIT: {
+		message: 'Required limit for public-minimum type',
+		optional: true,
+		default: 2,
+	},
 	RATE_LIMITER_GENERAL_WINDOW: {
 		message: 'Required window duration for general type',
 		optional: true,
