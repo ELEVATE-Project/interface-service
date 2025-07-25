@@ -105,7 +105,7 @@ const orchestrationHandler = async (packages, mergeOption ,req, res) => {
 			} else {
 				body = responses[servicePackage.basePackageName]?.result
 			}
-			response = bodyValueReplacer(response, servicePackage.responseBody)
+			body = bodyValueReplacer(body, servicePackage.responseBody)
 			responseArray.push(body)
 		}
 
