@@ -19,7 +19,7 @@ exports.initializeRouter = (packages) => {
 
 		routes.forEach((route) => {
 			const method = httpMethods[route.type]
-			const { sourceRoute, orchestrated, requiresCustomHandling, targetPackages, mergeConfiguration } = route
+			const { sourceRoute, orchestrated, requiresCustomHandling, targetPackages } = route
 			const basePackageName = targetPackages[0].basePackageName
 			const servicePackage = packages.find((pkg) => pkg.packageMeta.basePackageName === basePackageName)
 
@@ -32,7 +32,7 @@ exports.initializeRouter = (packages) => {
 					rateLimiter,
 					urlencodedParser,
 					jsonBodyParserWithErrors,
-					orchestrationController.orchestrationHandler.bind(null, packages, mergeConfiguration)
+					orchestrationController.orchestrationHandler.bind(null, packages)
 				)
 			else if (requiresCustomHandling)
 				router[method](

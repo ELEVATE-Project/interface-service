@@ -1,5 +1,7 @@
 'use strict'
 const { bodyValueReplacer } = require('@helpers/bodyValueReplacer')
+const { routesConfigs } = require('@root/configs/routesConfigs')
+const routes = routesConfigs.routes
 
 const removeArraySuffix = (obj) => {
 	if (Array.isArray(obj)) {
@@ -73,9 +75,12 @@ const customMergeFunctionCaller = async (result,mergeOption, packages) => {
 	return selectedPackage.customMergeFunctionHandler(result, mergeOption.functionName, packages)
 }
 
-const orchestrationHandler = async (packages, mergeOption ,req, res) => {
+const orchestrationHandler = async (packages, req, res) => {
 	try {
 		const { targetPackages, inSequence, responseMessage } = req
+		let sourceRoute = req.sourceRoute;
+		let selectedRouteConfig = routes.find((obj) => obj.sourceRoute === sourceRoute);
+		let mergeOption = selectedRouteConfig?.mergeConfiguration || {}
 		const responses = {}
 		let asyncRequestsStatues = []
 		if (inSequence)
