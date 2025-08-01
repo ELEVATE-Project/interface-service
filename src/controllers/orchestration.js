@@ -64,9 +64,9 @@ const packageRouterCaller = async (req, res, responses, servicePackage, packages
  * @function
  * @param {Array<Object>} result - An array of response objects from service packages to be merged.
  * @param {Object} mergeOption - The merge configuration object.
- * @param {Object} mergeOption.mergeConfig - Configuration that includes the base package name and the function name to call.
- * @param {string} mergeOption.mergeConfig.basePackageName - Identifier used to find the relevant package.
- * @param {string} mergeOption.mergeConfig.functionName - The name of the custom merge handler function to invoke.
+ * @param {string} mergeOption.basePackageName - Identifier used to find the relevant package.
+ * @param {string} mergeOption.functionName - The name of the custom merge handler function to invoke.
+ * @param {string} mergeOption.packageName - The package name (used for validation).
  * @param {Array<Object>} packages - Array of package objects, each expected to have a `packageMeta.basePackageName` and a `customMergeFunctionHandler` function.
  * @returns {Promise<Object>} The result of the custom merge function.
  */
