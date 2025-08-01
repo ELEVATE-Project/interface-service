@@ -70,9 +70,31 @@ const packageRouterCaller = async (req, res, responses, servicePackage, packages
  * @param {Array<Object>} packages - Array of package objects, each expected to have a `packageMeta.basePackageName` and a `customMergeFunctionHandler` function.
  * @returns {Promise<Object>} The result of the custom merge function.
  */
-const customMergeFunctionCaller = async (result,mergeOption, packages) => {
+const customMergeFunctionCaller = async (result, mergeOption, packages) => {
 	const selectedPackage = packages.find((obj) => obj.packageMeta.basePackageName === mergeOption.basePackageName)
-	return selectedPackage.customMergeFunctionHandler(result, mergeOption.functionName, packages)
+
+	// Validate package exists
+	if (!selectedPackage) {
+		throw new Error(`Package "${mergeOption.basePackageName}" not found in available packages`)
+	}
+
+	// Validate handler exists and is callable
+	if (typeof selectedPackage.customMergeFunctionHandler !== 'function') {
+		console.warn(
+			`Package "${mergeOption.basePackageName}" does not implement customMergeFunctionHandler, falling back to default merge`
+		)
+		// Fallback to default merge logic
+		return result.reduce((acc, curr) => ({ ...acc, ...curr }), {})
+	}
+
+	try {
+		return await selectedPackage.customMergeFunctionHandler(result, mergeOption.functionName, packages)
+	} catch (error) {
+		console.error(`Custom merge handler failed for package "${mergeOption.basePackageName}":`, error)
+		// Fallback to default merge
+		return result.reduce((acc, curr) => ({ ...acc, ...curr }), {})
+	}
+	
 }
 
 const orchestrationHandler = async (packages, req, res) => {
