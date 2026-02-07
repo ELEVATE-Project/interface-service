@@ -55,8 +55,25 @@ const packageRouterCaller = async (req, res, responses, servicePackage, packages
 	}
 	return true
 }
+/**
+ * Calls a custom merge handler defined in one of the packages based on the provided merge configuration.
+ *
+ * @async
+ * @function
+ * @param {Array<Object>} result - An array of response objects from service packages to be merged.
+ * @param {Object} mergeOption - The merge configuration object.
+ * @param {Object} mergeOption.mergeConfig - Configuration that includes the base package name and the function name to call.
+ * @param {string} mergeOption.mergeConfig.basePackageName - Identifier used to find the relevant package.
+ * @param {string} mergeOption.mergeConfig.functionName - The name of the custom merge handler function to invoke.
+ * @param {Array<Object>} packages - Array of package objects, each expected to have a `packageMeta.basePackageName` and a `customMergeFunctionHandler` function.
+ * @returns {Promise<Object>} The result of the custom merge function.
+ */
+const customMergeFunctionCaller = async (result,mergeOption, packages) => {
+	const selectedPackage = packages.find((obj) => obj.packageMeta.basePackageName === mergeOption.basePackageName)
+	return selectedPackage.customMergeFunctionHandler(result, mergeOption.functionName, packages)
+}
 
-const orchestrationHandler = async (packages, req, res) => {
+const orchestrationHandler = async (packages, mergeOption ,req, res) => {
 	try {
 		const { targetPackages, inSequence, responseMessage } = req
 		const responses = {}
@@ -78,6 +95,7 @@ const orchestrationHandler = async (packages, req, res) => {
 				})
 			)
 		let response = {}
+		let responseArray = []
 		for (const servicePackage of targetPackages) {
 			let body
 			if(servicePackage.merge == true && servicePackage.mergeKey != ''){
@@ -87,9 +105,24 @@ const orchestrationHandler = async (packages, req, res) => {
 			} else {
 				body = responses[servicePackage.basePackageName]?.result
 			}
-			response = { ...response, ...body }
-			response = bodyValueReplacer(response, servicePackage.responseBody)
+			body = bodyValueReplacer(body, servicePackage.responseBody)
+			responseArray.push(body)
 		}
+
+		// Check if custom merge options are provided in the configuration
+		if (mergeOption && mergeOption.basePackageName && mergeOption.functionName && mergeOption.packageName) {
+			// If all required fields for custom merging exist,
+			// call the custom merge function to handle merging logic
+			let result = await customMergeFunctionCaller(responseArray,mergeOption, packages)
+			response = result
+		}else {
+			// Fallback to default merging behavior
+			for(let resp of responseArray){
+				response = { ...response, ...resp }
+			}
+		}
+
+
 		if (!asyncRequestsStatues.includes(false))
 			res.status(200).send({
 				responseCode: 'OK',
