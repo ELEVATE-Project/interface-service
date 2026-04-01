@@ -11,6 +11,14 @@ exports.targetPackagesInjector = (req, res, next) => {
 		matchPathsAndExtractParams(route.sourceRoute, urlWithoutQuery)
 	)
 
+	if (!routeConfig) {
+		const error = new Error('Invalid URL')
+		error.status = 400
+		error.code = 'INVALID_URL'
+	
+		return next(error)
+	}
+
 	// const routeConfig = routesConfigs.routes.find((route) => route.sourceRoute === req.originalUrl)
 	
 	req['targetPackages'] = routeConfig.targetPackages

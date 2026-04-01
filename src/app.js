@@ -56,6 +56,21 @@ const executeScripts = require('./scripts');
             res.sendFile(path.join(__dirname, './api-doc/index.html'));
         });
 
+        /**
+         * GLOBAL ERROR HANDLER
+         * Must be registered AFTER all routes
+         */
+        app.use((err, req, res, next) => {
+            console.error('Global Error Handler:', err);
+
+            const status = err.status || err.statusCode || 500;
+
+            res.status(status).json({
+                success: false,
+                message: err.message || 'Internal Server Error'
+            });
+        });
+
         // Start the server
         app.listen(process.env.APPLICATION_PORT, (err) => {
             if (err) {
