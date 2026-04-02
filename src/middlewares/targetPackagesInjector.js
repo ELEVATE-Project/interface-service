@@ -12,7 +12,7 @@ exports.targetPackagesInjector = (req, res, next) => {
 	)
 
 	if (!routeConfig) {
-		const error = new Error('Invalid URL')
+		const error = new Error('Invalid URL or malformed request path.')
 		error.status = 400
 		error.code = 'INVALID_URL'
 	
