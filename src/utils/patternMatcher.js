@@ -1,5 +1,13 @@
 'use strict'
+
+const removeTrailingSlash = (value) => {
+	if (typeof value !== 'string') return value
+	const normalizedValue = value.replace(/[^A-Za-z0-9._~-]+$/g, '')
+	return normalizedValue || '/'
+}
+
 exports.matchPathsAndExtractParams = (pattern, url) => {
+	const normalizedUrl = removeTrailingSlash(url)
 	const paramNames = []
 	const regexPattern = new RegExp(
 		pattern.replace(/\/:(\w+)/g, (_, paramName) => {
@@ -7,7 +15,7 @@ exports.matchPathsAndExtractParams = (pattern, url) => {
 			return '/([^/]+)'
 		}) + '$'
 	)
-	const matchResult = url.match(regexPattern)
+	const matchResult = normalizedUrl.match(regexPattern)
 	if (!matchResult) return false
 	const params = {}
 	for (let i = 0; i < paramNames.length; i++) {
