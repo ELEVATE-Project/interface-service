@@ -10,14 +10,6 @@ exports.routeConfigInjector = (req, res, next) => {
 		matchPathsAndExtractParams(route.sourceRoute, urlWithoutQuery)
 	)
 
-	if (!routeConfig) {
-		const error = new Error('Invalid URL or malformed request path.')
-		error.status = 400
-		error.code = 'INVALID_URL'
-	
-		return next(error)
-	}
-
 	if(routeConfig.targetPackages[0] && routeConfig.targetPackages[0].service){
 		req['baseUrl'] = process.env[`${routeConfig.targetPackages[0].service.toUpperCase()}_SERVICE_BASE_URL`]
 		
