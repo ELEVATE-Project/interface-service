@@ -38,6 +38,33 @@ const executeScripts = require('./scripts');
 
         // Middleware and CORS setup
         app.use(cors());
+        app.use((req, res, next) => {
+            const [pathPart, queryPart] = req.originalUrl.split('?');
+            let normalizedPath = pathPart.trim();
+
+            // Collapse repeated slashes in the path.
+            normalizedPath = normalizedPath.replace(/\/{2,}/g, '/');
+
+            // Remove trailing junk characters and any trailing slash+junk combos.
+            // Keep URL-safe path chars: alphanumerics, slash, underscore, hyphen, dot, tilde.
+            normalizedPath = normalizedPath.replace(/[^A-Za-z0-9/_\-.~]+$/g, '');
+            normalizedPath = normalizedPath.replace(/[^\w.\-~\/]*[\/]+[^\w.\-~\/]*$/g, (match) =>
+                match.includes('/') ? '/' : ''
+            );
+
+            // Final cleanup in case trailing cleanup introduced repeated slashes.
+            normalizedPath = normalizedPath.replace(/\/{2,}/g, '/');
+
+            if (!normalizedPath) normalizedPath = '/';
+            const normalizedUrl = queryPart ? `${normalizedPath}?${queryPart}` : normalizedPath;
+
+            if (normalizedUrl !== req.originalUrl) {
+                console.log(`[app] Normalized URL from "${req.originalUrl}" to "${normalizedUrl}"`);
+                req.url = normalizedUrl;
+                req.originalUrl = normalizedUrl;
+            }
+            next();
+        });
 
         // Set Access-Control-Allow-Origin header
         app.use((req, res, next) => {
