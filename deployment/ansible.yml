@@ -8,11 +8,11 @@
         src: "{{ project_path }}/.token"
       register: slurpfile
     - name: Run vault credentials
-      shell: "curl --location --request GET '{{ vaultAddress }}{{ vaultName }}' --header 'X-Vault-Token: {{ slurpfile['content'] | b64decode }}' | jq '.data' > '{{ project_path }}/data2.json'"
+      shell: "curl --silent --insecure --location --request GET '{{ vaultAddress }}{{ vaultName }}' --header 'X-Vault-Token: {{ slurpfile['content'] | b64decode }}' | jq '.data' > '{{ project_path }}/data2.json'"
       register: credentials
 
     - name: Get gcp credentials
-      shell: "curl --location --request GET '{{ vaultAddress }}gcp' --header 'X-Vault-Token: {{ slurpfile['content'] | b64decode }}' | jq '.data.data' > '{{ project_path }}/gcp.json'"
+      shell: "curl --silent --insecure --location --request GET '{{ vaultAddress }}gcp' --header 'X-Vault-Token: {{ slurpfile['content'] | b64decode }}' | jq '.data.data' > '{{ project_path }}/gcp.json'"
 
     - name: Create release folder
       set_fact:
