@@ -39,6 +39,17 @@ const executeScripts = require('./scripts');
         // Middleware and CORS setup
         app.use(cors());
 
+        // URL rewriter to support /api prefix transparently (frontend calls /api/<service>/...)
+        app.use((req, res, next) => {
+            if (req.url.startsWith('/api/')) {
+                req.url = req.url.replace(/^\/api/, '');
+            }
+            if (req.originalUrl.startsWith('/api/')) {
+                req.originalUrl = req.originalUrl.replace(/^\/api/, '');
+            }
+            next();
+        });
+
         // Set Access-Control-Allow-Origin header
         app.use((req, res, next) => {
             res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_HOST);

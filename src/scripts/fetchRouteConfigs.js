@@ -76,9 +76,11 @@ async function constructJson(url) {
         } else if (await validateJsonFilePath(url)) {
             // load the json file from mentioned location
             jsonData.data = await loadJsonFile(url);
+        } else {
+            console.warn(`Route config not found (not a URL or an existing .json file): ${url}`)
         }
 
-        jsonData.success = jsonData?.data.routes.length > 0 && isJsonValid(jsonData) ? true : false
+        jsonData.success = jsonData?.data?.routes?.length > 0 && isJsonValid(jsonData) ? true : false
 
         let fileData = {
             routes: []
@@ -179,7 +181,7 @@ function isAValidUrl(path) {
         new URL(path);
         return true; // Input is a valid URL
     } catch (e) {
-        throw { message: `Invalid URL : ${path} ` }
+        return false; // Not a URL, may be a local file path
     }
 }
 

@@ -16,6 +16,7 @@ exports.initializeRouter = (packages) => {
 		const express = require('express')
 		const router = express.Router()
 		const routes = routesConfigs.routes
+		const skippedRoutes = {}
 
 		routes.forEach((route) => {
 			const method = httpMethods[route.type]
@@ -23,7 +24,12 @@ exports.initializeRouter = (packages) => {
 			const basePackageName = targetPackages[0].basePackageName
 			const servicePackage = packages.find((pkg) => pkg.packageMeta.basePackageName === basePackageName)
 
-			if (!servicePackage) throw new Error(`Package with basePackageName ${basePackageName} not found`)
+			// The shared Elevate route config also lists services BRAC does not run (e.g. self-creation-portal).
+			// Skip those routes instead of stopping the server.
+			if (!servicePackage) {
+				skippedRoutes[basePackageName] = (skippedRoutes[basePackageName] || 0) + 1
+				return
+			}
 
 			if (orchestrated)
 				router[method](
@@ -45,6 +51,10 @@ exports.initializeRouter = (packages) => {
 				)
 			else router[method](sourceRoute, routeConfigInjector, rateLimiter, servicePackage.packageRouter)
 		})
+
+		Object.entries(skippedRoutes).forEach(([basePackageName, count]) =>
+			console.warn(`Skipped ${count} routes for "${basePackageName}": no package loaded for it (not in REQUIRED_PACKAGES)`)
+		)
 
 		return router
 	} catch (err) {
