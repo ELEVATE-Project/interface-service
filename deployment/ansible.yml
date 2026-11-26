@@ -3,6 +3,35 @@
   vars:
     project_path: /opt/backend/deployment
   tasks:
+    - name: Debug Vault variables
+      debug:
+        msg:
+          - "Vault Address: {{ vaultAddress }}"
+          - "Vault Name: {{ vaultName }}"
+          - "Token decoded: {{ (slurpfile.content | b64decode) | length }} characters"
+
+    - name: Check jq installation
+      command: which jq
+      register: jq_check
+      changed_when: false
+
+    - name: Debug jq
+      debug:
+        var: jq_check.stdout
+
+    - name: Run vault credentials
+      shell: |
+        set -x
+        curl -v --insecure --location \
+          --request GET '{{ vaultAddress }}{{ vaultName }}' \
+          --header 'X-Vault-Token: {{ slurpfile.content | b64decode | trim }}' \
+          | jq '.data' > '{{ project_path }}/data2.json'
+      register: credentials
+      no_log: false
+
+    - name: Debug Vault response
+      debug:
+        var: credentials
     - name: Slurp hosts file
       slurp:
         src: "{{ project_path }}/.token"
