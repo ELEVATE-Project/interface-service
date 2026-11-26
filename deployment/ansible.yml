@@ -3,42 +3,43 @@
   vars:
     project_path: /opt/backend/deployment
   tasks:
-    - name: Debug Vault variables
-      debug:
-        msg:
-          - "Vault Address: {{ vaultAddress }}"
-          - "Vault Name: {{ vaultName }}"
-          - "Token decoded: {{ (slurpfile.content | b64decode) | length }} characters"
-
-    - name: Check jq installation
-      command: which jq
-      register: jq_check
-      changed_when: false
-
-    - name: Debug jq
-      debug:
-        var: jq_check.stdout
-
-    - name: Run vault credentials
-      shell: |
-        set -x
-        curl -v --insecure --location \
-          --request GET '{{ vaultAddress }}{{ vaultName }}' \
-          --header 'X-Vault-Token: {{ slurpfile.content | b64decode | trim }}' \
-          | jq '.data' > '{{ project_path }}/data2.json'
-      register: credentials
-      no_log: false
-
-    - name: Debug Vault response
-      debug:
-        var: credentials
-    - name: Slurp hosts file
+    - name: Slurp token file
       slurp:
         src: "{{ project_path }}/.token"
       register: slurpfile
-    - name: Run vault credentials
-      shell: "curl --silent --insecure --location --request GET '{{ vaultAddress }}{{ vaultName }}' --header 'X-Vault-Token: {{ slurpfile['content'] | b64decode }}' | jq '.data' > '{{ project_path }}/data2.json'"
+
+    - name: Debug Vault variables
+      debug:
+        msg:
+          - "Vault Address: {{ vaultAddress | default('NOT SET') }}"
+          - "Vault Name: {{ vaultName | default('NOT SET') }}"
+          - "Token length: {{ (slurpfile.content | b64decode | trim) | length }}"
+
+    - name: Check environment
+      shell: |
+        env | sort
+      register: env_output
+      changed_when: false
+
+    - name: Debug environment
+      debug:
+        var: env_output.stdout_lines
+
+    - name: Run Vault credentials
+      shell: |
+        set -o pipefail
+        curl --fail --silent --show-error --insecure \
+          --location \
+          --request GET '{{ vaultAddress }}{{ vaultName }}' \
+          --header 'X-Vault-Token: {{ slurpfile.content | b64decode | trim }}' \
+          | jq '.data' > '{{ project_path }}/data2.json'
+      args:
+        executable: /bin/bash
       register: credentials
+
+    - name: Debug Vault command
+      debug:
+        var: credentials
 
     - name: Get gcp credentials
       shell: "curl --silent --insecure --location --request GET '{{ vaultAddress }}gcp' --header 'X-Vault-Token: {{ slurpfile['content'] | b64decode }}' | jq '.data.data' > '{{ project_path }}/gcp.json'"
